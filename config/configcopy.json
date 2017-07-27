@@ -1,0 +1,6 @@
+{
+	"prefix":"%",
+	"soundfile":"./sounds",
+	"giphy_key":"bf6281277a8341b8ac09bb6cc8863da4",
+	"giphy_link":"https://api.giphy.com/v1/gifs/random?api_key=bf6281277a8341b8ac09bb6cc8863da4"
+}

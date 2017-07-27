@@ -1,0 +1,10 @@
+{
+  "name": "",
+  "version": "",
+  "dependencies": {
+    "discord.js": "^11.1.0",
+    "jsonrequest": "^4.1.7",
+    "node-opus": "^0.2.6",
+    "ytdl-core": "^0.14.4"
+  }
+}
