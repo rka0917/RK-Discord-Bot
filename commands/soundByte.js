@@ -6,10 +6,9 @@ var iReady = true;
 
 exports.run = (client, message, args) => {
 	console.log(iReady);
-	if(iReady && message.member.voiceChannel !== undefined){
+	if(iReady && message.member.voiceChannel){
 		iReady = false;
-  		var member = message.member;
-  		var voiceChannel = member.voiceChannel;
+  		var voiceChannel = message.member.voiceChannel;
   		voiceChannel.join()
   			.then(connection => {
   				const dispatcher = connection.playFile(config.soundfile + '/ishouldgo.mp3');
@@ -21,5 +20,5 @@ exports.run = (client, message, args) => {
   				})
   			})
   			.catch(err => console.log(err));
-  	} else {}
+  	}
 }

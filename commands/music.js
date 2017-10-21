@@ -10,8 +10,10 @@ var boundVoiceChannel = null;
 var dispatcher = null;
 var repeat = "off";
 var repeatList = [];
-
+//TODO Look at the repeat function (add each new song on the repeatList incrementaly) or display).
 //TODO Implement the possibility for the user to choose from search alternatives when queueing a song
+//TODO Look at bug when booting bot while it is sitting in a chatroom and then try to play music
+//TODO Not queuing past the last song (so last song is always in the list)
 exports.run = (client, message, args) => {
 	const action = args[0];
 
@@ -28,7 +30,8 @@ exports.run = (client, message, args) => {
 				iReady = true;
 			}
 		} else if(action == "p" || action == "play"){ // Start playing songs
-			if(!dispatcher){
+			console.log(dispatcher);
+			if(!dispatcher){  // I check this to make sure that the bot isn't playing somewhere else
 				if(musicQueue.length > 0){
 					playSong(client, message);
 				} else {
@@ -38,12 +41,15 @@ exports.run = (client, message, args) => {
 
 		} else if((action == "s" || action == "skip") && dispatcher) { //Is a song playing???
 			console.log("We are starting with skip command");
-			dispatcher.end();
+			dispatcher.end("skip");
+			dispatcher = null;
+			//dispatcher.end();
 
 		} else if(action == "l" || action == "leave"){ //Leave voice channel
 			dispatcher.end("leave");
 			boundVoiceChannel.leave();
 			boundVoiceChannel = null;
+			dispatcher = null;
 		} else if(action == "j" || action == "join"){ //Bot joins the voiceChannel
 			boundVoiceChannel = message.member.voiceChannel;
 			boundVoiceChannel.join();
@@ -140,12 +146,14 @@ function playSong(client, message){
 
 		dispatcher = client.voiceConnections.first().playStream(stream, streamOptions);
 		dispatcher.on("end", end =>{
+			console.log("I am the end called: " + end);
 			if(end == "leave"){
 				console.log(end + " is stopping the thing");
-				dispatcher == null;
+				//dispatcher = null;
 			} else if(end){
 				console.log("end is: " + end);
 				console.log(end + " is in the end clause of dispatcher!\n");
+
 				if(repeat != "one"){
 					queueNextSong();
 				}
